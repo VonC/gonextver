@@ -1,0 +1,6 @@
+*.exe
+senv.bat
+a
+test/
+version.txt
+build-info.txt
