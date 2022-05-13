@@ -18,7 +18,7 @@ type Context struct {
 type VersionFlag int
 type VersionCmd struct{}
 
-func ParseArgs() *CLI {
+func parseArgs() *CLI {
 	res := &CLI{}
 	rt := reflect.TypeOf(*res)
 	veropt, shortveropt := "", ""
@@ -40,7 +40,8 @@ func ParseArgs() *CLI {
 		if opt == veropt || opt == shortveropt || opt == vercmd || opt == aliasvercmd {
 			res.Version = res.Version + 1
 		}
-		if len(anArg) > 1 && anArg == strings.Repeat(shortveropt, len(anArg)) {
+		// fmt.Printf("opt=%s, shortveropt='%s'\n", opt, shortveropt)
+		if len(opt) > 1 && opt == strings.Repeat(shortveropt, len(opt)) {
 			res.Version = res.Version + VersionFlag(len(anArg))
 		}
 	}
