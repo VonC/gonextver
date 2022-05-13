@@ -182,8 +182,8 @@ set "host=%host:]=%"
 set "ldflags=-X %module_name%/gonextver/version.GitTag=%gitver% -X %module_name%/gonextver/version.BuildUser=%USERNAME% -X %module_name%/gonextver/version.VersionApp=%appver%/%gitver% -X %module_name%/gonextver/version.BuildDate=%dtStamp% -X %module_name%/gonextver/version.BuildHost=%host%"
 
 %_info% "Copy version.txt and build-info.txt from %dirname% back to gonextver/ for embedding them"
-copy /Y "%script_dir%\version.txt" "%script_dir%\gonextver\version.txt"
-copy /Y "%script_dir%\build-info.txt" "%script_dir%\gonextver\build-info.txt"
+copy /Y "%script_dir%\version.txt" "%script_dir%\gonextver\version\version.txt"
+copy /Y "%script_dir%\build-info.txt" "%script_dir%\gonextver\version\build-info.txt"
 
 rem %_info% "Back to build.bat dirname='%dirname%' outputname='%outputname%' fflag='%fflag%' ldflags='%ldflags%'"
 endlocal & set "dirname=%dirname%" & set "outputname=%outputname%" & set "fflag=%fflag%" & set "ldflags=%ldflags%"
