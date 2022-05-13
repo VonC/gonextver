@@ -42,7 +42,7 @@ func parseArgs() *CLI {
 		}
 		// fmt.Printf("opt=%s, shortveropt='%s'\n", opt, shortveropt)
 		if len(opt) > 1 && opt == strings.Repeat(shortveropt, len(opt)) {
-			res.Version = res.Version + VersionFlag(len(anArg))
+			res.Version = res.Version + VersionFlag(len(opt))
 		}
 	}
 	return res
