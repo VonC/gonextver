@@ -16,23 +16,22 @@ var (
 	BuildDate string
 	// BuildHost is the hostname of build (set through go build -ldflags)
 	BuildHost string
-	// Version is the appver/gitver of build (set through go build -ldflags)
-	VersionApp string
 )
 
-// https://github.com/golang/go/issues/41191
-// https://stackoverflow.com/a/67357103/6309
-//go:embed *.txt
-var versionFs embed.FS
+func (ver *ver) VersionFromArgs() string {
+	cli := parseArgs()
+	l := int(cli.Version)
+	return ver.Version(l)
+}
 
-// String displays all the version values
-func String(verlevel int) string {
-	if verlevel == 0 {
+// Version displays all the version values
+func (ver *ver) Version(verlevel int) string {
+	if verlevel < 1 {
 		return ""
 	}
 	// https://github.com/golang/go/issues/41191
 	// https://stackoverflow.com/a/67357103/6309
-	res := Version()
+	res := ver.String()
 	if strings.HasPrefix(res, "Unknown") == false {
 		res = "v" + res
 	}
@@ -70,10 +69,9 @@ func String(verlevel int) string {
 		//spew.Dump(info)
 	}
 	if verlevel >= 3 {
-		if GitTag != "" || BuildUser != "" || BuildDate != "" || BuildHost != "" || VersionApp != "" {
+		if GitTag != "" || BuildUser != "" || BuildDate != "" || BuildHost != "" {
 			res = res + "\n"
 			l := len("Build User")
-			res = res + pflag("Version", VersionApp, l)
 			res = res + pflag("Git Tag", GitTag, l)
 			res = res + pflag("Build User", BuildUser, l)
 			res = res + pflag("BuildDate", BuildDate, l)
@@ -92,12 +90,27 @@ func pflag(prefix, value string, l int) string {
 	return res
 }
 
+type ver struct {
+	versionFS embed.FS
+}
+
+type VersionStringer interface {
+	VersionFromArgs() string
+	Version(level int) string
+	String() string
+}
+
+func NewVersionStringer(versionFS embed.FS) VersionStringer {
+	res := &ver{versionFS: versionFS}
+	return res
+}
+
 // Version display the version number
-func Version() string {
+func (ver *ver) String() string {
 	res := ""
 	// https://github.com/golang/go/issues/41191
 	// https://stackoverflow.com/a/67357103/6309
-	v, err := versionFs.ReadFile("version.txt")
+	v, err := ver.versionFS.ReadFile("version.txt")
 	if err != nil {
 		res = res + fmt.Sprintf("Unknown version: %+v\n", err)
 	} else {
