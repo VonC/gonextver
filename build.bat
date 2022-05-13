@@ -181,14 +181,11 @@ set "host=%host:[=%"
 set "host=%host:]=%"
 set "ldflags=-X %module_name%/gonextver/version.GitTag=%gitver% -X %module_name%/gonextver/version.BuildUser=%USERNAME% -X %module_name%/gonextver/version.VersionApp=%appver%/%gitver% -X %module_name%/gonextver/version.BuildDate=%dtStamp% -X %module_name%/gonextver/version.BuildHost=%host%"
 
-%_info% "Copy version.txt and build-info.txt from %dirname% back to gonextver/ for embedding them"
-copy /Y "%script_dir%\version.txt" "%script_dir%\gonextver\version\version.txt"
-copy /Y "%script_dir%\build-info.txt" "%script_dir%\gonextver\version\build-info.txt"
-
 rem %_info% "Back to build.bat dirname='%dirname%' outputname='%outputname%' fflag='%fflag%' ldflags='%ldflags%'"
 endlocal & set "dirname=%dirname%" & set "outputname=%outputname%" & set "fflag=%fflag%" & set "ldflags=%ldflags%"
 %_info% "Back_ to build.bat dirname='%dirname%' outputname='%outputname%' fflag='%fflag%' ldflags='%ldflags%'"
-echo set "dirname=%dirname%"> "%script_dir%\vars.bat
+@echo @echo off> "%script_dir%\vars.bat
+echo set "dirname=%dirname%">> "%script_dir%\vars.bat
 echo set "outputname=%outputname%" >> "%script_dir%\vars.bat
 echo set "fflag=%fflag%" >> "%script_dir%\vars.bat
 echo set "ldflags=%ldflags%" >> "%script_dir%\vars.bat
