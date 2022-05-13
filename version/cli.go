@@ -35,9 +35,13 @@ func ParseArgs() *CLI {
 		}
 	}
 	for i := 1; i < len(os.Args); i++ {
-		opt := strings.TrimLeft(os.Args[i], "-")
+		anArg := os.Args[i]
+		opt := strings.TrimLeft(anArg, "-")
 		if opt == veropt || opt == shortveropt || opt == vercmd || opt == aliasvercmd {
 			res.Version = res.Version + 1
+		}
+		if len(anArg) > 1 && anArg == strings.Repeat(shortveropt, len(anArg)) {
+			res.Version = res.Version + VersionFlag(len(anArg))
 		}
 	}
 	return res
