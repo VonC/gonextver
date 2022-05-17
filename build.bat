@@ -80,7 +80,13 @@ if not exist "%script_dir%\version.txt" (
         echo %VERSION:v=%>"%script_dir%\version.txt"
     )
 )
-if "%1" == "rel" ( 
+for /f %%i in ('type "%script_dir%\version.txt"') do set "appver=%%i"
+if "%1" == "rel" (
+    for /f %%i in ('git commit -a --dry-run --short^|wc -l') do SET "nbf=%%i"
+    if not "!nbf!" == "0" (
+        git commit -a --dry-run --short
+        %_fatal% "RELEASE: must commit work in progress first before making next release '%appver:-SNAPSHOT=%'" 50
+    )
     sed -i "s/-SNAPSHOT//g" "%script_dir%\version.txt"
     shift
 )
